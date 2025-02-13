@@ -1,0 +1,3 @@
+tiger_count : [(8,)]
+sumatran_tiger_ncbi : [(9695,)]
+rice_with_longest_DNA : [(110450, 'Oryza granulata', 80745213)]

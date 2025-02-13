@@ -18,11 +18,14 @@ def main():
             print(err)
 
     cursor = conn.cursor()
+    records = {}
 
-    for query in QUERIES.values():
+    for title, query in QUERIES.items():
         cursor.execute(query)
-        print(cursor.fetchall())
+        records[title] = cursor.fetchall()
 
+    save_to_file(records)
+    
     cursor.close()
     conn.close()
 

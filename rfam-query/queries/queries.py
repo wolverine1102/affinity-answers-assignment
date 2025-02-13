@@ -19,4 +19,17 @@ QUERIES = {
                                 ORDER BY r.length DESC
                                 LIMIT 1;
                                 """,
+
+    "pagination" : """
+                    SELECT t.ncbi_id, t.species, r.DNA_length
+                    FROM taxonomy t
+                    JOIN (
+                        SELECT ncbi_id, MAX(length) as DNA_length
+                        FROM rfamseq 
+                        GROUP BY ncbi_id
+                        HAVING MAX(length) > 1000000
+                    ) r ON r.ncbi_id = t.ncbi_id
+                    ORDER BY r.length DESC
+                    LIMIT 15 OFFSET 120
+                    """
 }
