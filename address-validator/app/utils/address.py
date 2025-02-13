@@ -5,17 +5,19 @@ def extract_pincode(address):
     match = re.search(r"\b\d{6}\b", address)
     return match.group() if match else None
 
-def fetch_locations(pincode):
+def fetch_regions(pincode):
     url = f"https://api.postalpincode.in/pincode/{pincode}"
     response = requests.get(url)
 
     if response.status_code == 200:
         data = response.json()
         if data[0]["Status"] == "Success":
-            locations = []
+            regions = []
             for post_office in data[0]["PostOffice"]:
-               locations.append(f"{post_office["Name"], post_office["District"], post_office["State"]}")
-
-            return locations
+               regions.append({
+                   "area" : post_office["Name"].lower(),
+                   "district" : post_office["District"].lower()
+               })
+            return regions
         
     return None

@@ -13,7 +13,7 @@ def validate():
     except ValidationError as err:
         return jsonify({"error": err.messages}), 400
     
-    address = data["address"]
+    address = data["address"].lower()
     pincode = extract_pincode(address) if data.get("pincode") is None else data["pincode"]
 
     if not pincode:
@@ -22,22 +22,26 @@ def validate():
             "message": "No PIN Code found in the address."
         }), 400
     
-    valid_locations = fetch_locations(pincode)
+    regions = fetch_regions(pincode)
 
-    if not valid_locations:
+    if not regions:
         return jsonify({
             "status" : "Error",
             "message": f"PIN Code {pincode} not found"
         }), 400
     
-    for location in valid_locations:
-        if location in address:
+    for region in regions:
+        if region["area"] in address and region["district"] in address: 
             return jsonify({
                 "status": "Valid",
-                "message": f"PIN code {pincode} correctly corresponds to {location}"
+                "message": "PIN code {pincode} correctly corresponds to {area}, {district}".format(
+                    pincode = pincode,
+                    area = region["area"].capitalize(),
+                    district = region["district"].capitalize()
+                )
             }), 200
 
     return jsonify({
-        "status" : "Error",
+        "status" : "Invalid",
         "message" : f"PIN Code {pincode} does not match the address"
     }), 200
