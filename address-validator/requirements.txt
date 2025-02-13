@@ -1,3 +1,5 @@
 Flask
 flask_marshmallow
 requests
+pytest 
+pytest-flask
