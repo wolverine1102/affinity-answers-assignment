@@ -29,7 +29,7 @@ QUERIES = {
                         GROUP BY ncbi_id
                         HAVING MAX(length) > 1000000
                     ) r ON r.ncbi_id = t.ncbi_id
-                    ORDER BY r.length DESC
+                    ORDER BY r.DNA_length DESC
                     LIMIT 15 OFFSET 120
                     """
 }
